@@ -1,9 +1,11 @@
 package view;
 
+import java.awt.Component;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class Validation {
 
@@ -76,34 +78,6 @@ public class Validation {
         }
     }
 
-    public String getStringValue(String msg, String regex, String inputName) {
-        while (true) {
-            try {
-                System.out.print(msg);
-                String value = sc.nextLine().trim();
-
-                if (value.isEmpty()) {
-                    throw new IllegalArgumentException("Error: " + inputName + " can't be null or empty!");
-                }
-                if (value.matches("^-?\\d+(\\.\\d+)?$")) {
-                    throw new IllegalArgumentException("Error: " + inputName + " can't contain number!");
-                }
-                if (value.matches("^W+$")) {
-                    throw new IllegalArgumentException("Error: " + inputName + " can't contain special characters!");
-                }
-
-                if (value.matches(regex)) {
-                    return value;
-                } else {
-                    throw new IllegalArgumentException("Error: " + inputName + " contains invalid characters! Please Enter Correct " + regex);
-                }
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-
-            }
-        }
-    }
-
     public String getInputString(String msg, String regex, String inputName) {
 
         while (true) {
@@ -122,6 +96,32 @@ public class Validation {
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
+        }
+    }
+
+    public double checkDoubleInputFromJFRAM(Component parentComponent, String input, String inputName) {
+        if (input.isEmpty()) {
+            JOptionPane.showMessageDialog(parentComponent, inputName + " can't be null.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        if (input.matches(".*[a-zA-Z].*")) {
+            JOptionPane.showMessageDialog(parentComponent, inputName + " can't be contain letters.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        double value = Double.parseDouble(input);
+        if (value <= 0) {
+            JOptionPane.showMessageDialog(parentComponent, inputName + " can't be negative.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return value;
+    }
+
+    public String checkStringInputFormJFRAME(Component parentComponent, String input, String regex, String inputName) {
+        if (input.isEmpty()) {
+            JOptionPane.showMessageDialog(parentComponent, inputName + " can't be null.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        if (input.matches(regex)) {
+            return input;
+        } else {
+            JOptionPane.showMessageDialog(parentComponent, "Invalid " + inputName + "! Please follow the regex." + regex, "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
         }
     }
 

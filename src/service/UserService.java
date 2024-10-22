@@ -3,6 +3,7 @@ package service;
 import Model.Users;
 import java.time.LocalDate;
 import java.util.List;
+import javax.swing.JOptionPane;
 import model.Address;
 import reponsitory.UsersRepository;
 import view.Validation;
@@ -17,14 +18,13 @@ public class UserService implements IUserService {
         check = new Validation();
         usersRepository = new UsersRepository();
         listUserses = usersRepository.readFile();
-
     }
 
     @Override
-    public void addNewCustomer() {
-        Users users = registNewUser();
+    public void addNewCustomer(Users users) {
         listUserses.add(users);
-        System.out.println("Add New User Successfull.");
+        usersRepository.writeFile(listUserses);
+        JOptionPane.showMessageDialog(null, "Customer added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public Users registNewUser() {
